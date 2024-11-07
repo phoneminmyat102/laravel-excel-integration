@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Imports\UserImport;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,5 +19,12 @@ class ExportsController extends Controller
         Excel::store(new UsersExport($users), 'users12.xlsx');
         return "The exporting has started.";
         // return (new UsersExport($users))->store('users2.xlsx');
+    }
+
+
+    public function import()
+    {
+        Excel::import(new UserImport, 'userImport.xlsx');
+        return '1';
     }
 }
