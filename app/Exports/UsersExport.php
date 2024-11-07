@@ -8,8 +8,10 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class UsersExport implements FromArray, WithHeadings, WithMapping
+class UsersExport implements WithMultipleSheets
 {
     // use Exportable;
     protected $data;
@@ -20,54 +22,16 @@ class UsersExport implements FromArray, WithHeadings, WithMapping
     }
 
 
-
     /**
      * @return array
      */
-    public function headings(): array
+    public function sheets(): array
     {
-        return [
-            '#',
-            'Name',
-            'Email',
-            'Phone Number',
-            'Address',
-        ];
-        
-        // $headings = [];
-        // foreach($this->data->toArray()[0] as $key => $value) {
-        //     $headings[] = User::Headings[$key];
-        // }
-        // return $headings;
-    }
-
-    /**
-     * @return array
-     */
-    public function array(): array 
-    {
-        return $this->data->toArray();
-    }
-
-    public function prepareRows($rows)
-    {
-        foreach($rows as $key => $value) {
-            $rows[$key]['name'] .= '(prepared)';
+        $sheets = [];
+        foreach($this->data as $user) {
+            $sheets[] = new UserSheetExport($user);
         }
-        return $rows;
+        return $sheets;
     }
-    /**
-     * @param  mixed  $row
-     * @return array
-     */
-    public function map($row): array
-    {
-        return [
-            $row['id'],
-            $row['name'],
-            $row['email'],
-            $row['phone_no'],
-            $row['address']
-        ];
-    }
+
 }
