@@ -5,12 +5,9 @@ namespace App\Exports;
 use App\Models\Order;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\FromView;
-use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class UsersExport implements FromView
+class UsersExport implements FromArray, WithHeadings
 {
 
     protected $data;
@@ -20,38 +17,35 @@ class UsersExport implements FromView
         $this->data = $data;
     }
 
-    // /**
-    // * @return \Illuminate\Support\Collection
-    // */
-    // public function collection()
-    // {
-    //     return User::all();
-    // }
-
-    // /**
-    //  * @return array
-    //  */
-    // public function array(): array 
-    // {
-    //     return $this->data->toArray();
-    // }
-
-    // /**
-    //  * @return Builder|EloquentBuilder|Relation|ScoutBuilder
-    //  */
-    // public function query()
-    // {
-    //     return Order::where('amount', '>', 50);
-    // }
 
 
     /**
-     * @return View
+     * @return array
      */
-    public function view(): View
+    public function headings(): array
     {
-        return view('orders', [
-            'data' => $this->data
-        ]);
+        // return [
+        //     '#',
+        //     'Name',
+        //     'Email',
+        //     'Address',
+        //     'Phone Number'
+        // ];
+        
+        $headings = [];
+        foreach($this->data->toArray()[0] as $key => $value) {
+            $headings[] = User::Headings[$key];
+        }
+        return $headings;
     }
+
+    /**
+     * @return array
+     */
+    public function array(): array 
+    {
+        return $this->data->toArray();
+    }
+
+    
 }

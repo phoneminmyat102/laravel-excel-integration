@@ -12,7 +12,8 @@ class ExportsController extends Controller
 {
     public function export() 
     {
-        $orders = Order::all();
-        return Excel::download(new UsersExport($orders), 'users.xlsx');
+        // $orders = Order::all();
+        $users = User::all();
+        return Excel::download(new UsersExport($users), 'users.xlsx');
     }
 }

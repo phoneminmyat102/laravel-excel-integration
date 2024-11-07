@@ -25,6 +25,14 @@ class User extends Authenticatable
         'address'
     ];
 
+    const Headings = [
+        'id' => '#',
+        'name' => 'Name',
+        'email' => 'Email',
+        'phone_no' => 'Phone Number',
+        'address'=> 'Address'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
